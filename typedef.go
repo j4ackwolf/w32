@@ -890,3 +890,11 @@ type HOOKPROC func(int, WPARAM, LPARAM) LRESULT
 
 // https://msdn.microsoft.com/en-us/library/windows/desktop/ms633498(v=vs.85).aspx
 type WNDENUMPROC func(HWND, LPARAM) LRESULT
+
+// https://msdn.microsoft.com/en-us/library/windows/desktop/ms648381(v=vs.85).aspx
+type CURSORINFO struct {
+	CbSize      DWORD
+	Flags       DWORD
+	HCursor     HCURSOR
+	PtScreenPos POINT
+}
