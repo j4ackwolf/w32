@@ -34,6 +34,7 @@ var (
 	procStartService                 = modadvapi32.NewProc("StartServiceW")
 	procStartTrace                   = modadvapi32.NewProc("StartTraceW")
 	procGetUserObjectInformation     = moduser32.NewProc("GetUserObjectInformationW")
+	procGetUserName                  = modadvapi32.NewProc("GetUserNameW")
 )
 
 var (
@@ -399,6 +400,18 @@ func GetUserObjectInformation(hUserObj HANDLE, nIndex int) (string, error) {
 		uintptr(nIndex),
 		uintptr(unsafe.Pointer(&buffer[0])),
 		uintptr(size),
+		uintptr(unsafe.Pointer(&size)))
+	if ret == 0 {
+		return "", syscall.GetLastError()
+	}
+	return syscall.UTF16ToString(buffer), nil
+}
+
+func GetUserName() (string, error) {
+	var size uint32 = 256
+	var buffer = make([]uint16, size)
+	ret, _, _ := procGetUserName.Call(
+		uintptr(unsafe.Pointer(&buffer[0])),
 		uintptr(unsafe.Pointer(&size)))
 	if ret == 0 {
 		return "", syscall.GetLastError()
