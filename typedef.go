@@ -209,6 +209,7 @@ type (
 	HRSRC           HANDLE
 	HTHUMBNAIL      HANDLE
 	HWND            HANDLE
+	HWINSTA         HANDLE
 	LPARAM          uintptr
 	LPCVOID         unsafe.Pointer
 	LRESULT         uintptr

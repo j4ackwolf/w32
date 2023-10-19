@@ -121,6 +121,13 @@ var (
 	procSetTimer                      = moduser32.NewProc("SetTimer")
 	procKillTimer                     = moduser32.NewProc("KillTimer")
 	procRedrawWindow                  = moduser32.NewProc("RedrawWindow")
+	procEnumDesktops                  = moduser32.NewProc("EnumDesktopsW")
+	procOpenDesktop                   = moduser32.NewProc("OpenDesktopW")
+	procOpenInputDesktop              = moduser32.NewProc("OpenInputDesktop")
+	procCloseDesktop                  = moduser32.NewProc("CloseDesktop")
+	procEnumWindowStations            = moduser32.NewProc("EnumWindowStationsW")
+	procOpenWindowStation             = moduser32.NewProc("OpenWindowStationW")
+	procCloseWindowStation            = moduser32.NewProc("CloseWindowStation")
 )
 
 func RegisterClassEx(wndClassEx *WNDCLASSEX) ATOM {
@@ -1032,15 +1039,74 @@ func KillTimer(hwnd HWND, nIDEvent uint32) bool {
 }
 
 // it will panic when the function fails
-func RedrawWindow(hWnd HWND, lpRect *RECT, hrgnUpdate HRGN, flag uint32) {
+func RedrawWindow(hWnd HWND, lpRect *RECT, hrgnUpdate HRGN, flag uintptr) {
 	ret, _, _ := procRedrawWindow.Call(
 		uintptr(hWnd),
 		uintptr(unsafe.Pointer(lpRect)),
 		uintptr(hrgnUpdate),
 		flag,
 	)
-	if ret!=0{
+	if ret != 0 {
 		panic("RedrawWindow fail")
 	}
 	return
+}
+
+func EnumDesktops(hWinStation HWINSTA, lpEnumFunc uintptr, lParam uintptr) bool {
+	ret, _, _ := procEnumDesktops.Call(
+		uintptr(hWinStation),
+		lpEnumFunc,
+		lParam,
+	)
+	return ret != 0
+}
+
+func OpenInputDesktop() HWND {
+	ret, _, _ := procOpenInputDesktop.Call(
+		uintptr(0),
+		uintptr(0),
+		uintptr(0),
+	)
+	return HWND(ret)
+}
+
+func OpenDesktop(lpszDesktop *uint16, dwFlags uint32, fInherit bool, dwDesiredAccess uint32) HWND {
+	ret, _, _ := procOpenDesktop.Call(
+		uintptr(unsafe.Pointer(lpszDesktop)),
+		uintptr(dwFlags),
+		uintptr(BoolToBOOL(fInherit)),
+		uintptr(dwDesiredAccess),
+	)
+	return HWND(ret)
+}
+
+func CloseDesktop(hDesktop HWND) bool {
+	ret, _, _ := procCloseDesktop.Call(
+		uintptr(hDesktop),
+	)
+	return ret != 0
+}
+
+func EnumWindowStations(lpEnumFunc uintptr, lParam uintptr) bool {
+	ret, _, _ := procEnumWindowStations.Call(
+		lpEnumFunc,
+		lParam,
+	)
+	return ret != 0
+}
+
+func OpenWindowStation(lpszWinSta *uint16, fInherit bool, dwDesiredAccess uint32) HWINSTA {
+	ret, _, _ := procOpenWindowStation.Call(
+		uintptr(unsafe.Pointer(lpszWinSta)),
+		uintptr(BoolToBOOL(fInherit)),
+		uintptr(dwDesiredAccess),
+	)
+	return HWINSTA(ret)
+}
+
+func CloseWindowStation(hWinSta HWINSTA) bool {
+	ret, _, _ := procCloseWindowStation.Call(
+		uintptr(hWinSta),
+	)
+	return ret != 0
 }
