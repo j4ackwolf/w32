@@ -167,7 +167,7 @@ const (
 	EVENT_TRACE_TYPE_CHECKPOINT            = 0x08
 	EVENT_TRACE_TYPE_SUSPEND               = 0x08
 	EVENT_TRACE_TYPE_WINEVT_SEND           = 0x09
-	EVENT_TRACE_TYPE_WINEVT_RECEIVE        = 0XF0
+	EVENT_TRACE_TYPE_WINEVT_RECEIVE        = 0xF0
 	TRACE_LEVEL_NONE                       = 0
 	TRACE_LEVEL_CRITICAL                   = 1
 	TRACE_LEVEL_FATAL                      = 1
@@ -297,4 +297,23 @@ const (
 	EVENT_TRACE_CONTROL_STOP               = 1
 	EVENT_TRACE_CONTROL_UPDATE             = 2
 	EVENT_TRACE_CONTROL_FLUSH              = 3
+)
+
+const (
+	UOI_FLAGS                           = 1
+	UOI_NAME                            = 2
+	UOI_TYPE                            = 3
+	UOI_USER_SID                        = 4
+	UOI_HEAPSIZE                        = 5
+	UOI_IO                              = 6
+	UOI_TIMERPROC_EXCEPTION_SUPPRESSION = 7
+	UOI_DISABLE_FORCE_SHUTDOWN          = 8
+	UOI_MANDATORY_POLICY                = 9
+	UOI_PROCESS_TRUST_LABEL             = 10
+	UOI_OWNER_WINDOW                    = 11
+	UOI_EXTENDED_FLAGS                  = 12
+	UOI_VIRTUAL_DESKTOP                 = 13
+	UOI_MONITOR_INVISIBLE               = 14
+	UOI_DESKTOP                         = 15
+	UOI_REASON_FLAGS                    = 16
 )

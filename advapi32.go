@@ -33,6 +33,7 @@ var (
 	procSetSecurityDescriptorDacl    = modadvapi32.NewProc("SetSecurityDescriptorDacl")
 	procStartService                 = modadvapi32.NewProc("StartServiceW")
 	procStartTrace                   = modadvapi32.NewProc("StartTraceW")
+	procGetUserObjectInformation     = moduser32.NewProc("GetUserObjectInformationW")
 )
 
 var (
@@ -386,4 +387,21 @@ func SetSecurityDescriptorDacl(pSecurityDescriptor *SECURITY_DESCRIPTOR, pDacl *
 	}
 	e = syscall.GetLastError()
 	return
+}
+
+func GetUserObjectInformation(hUserObj HANDLE, nIndex int) (string, error) {
+
+	var size uint32 = 256
+	var buffer = make([]uint16, size)
+
+	ret, _, _ := procGetUserObjectInformation.Call(
+		uintptr(hUserObj),
+		uintptr(nIndex),
+		uintptr(unsafe.Pointer(&buffer[0])),
+		uintptr(size),
+		uintptr(unsafe.Pointer(&size)))
+	if ret == 0 {
+		return "", syscall.GetLastError()
+	}
+	return syscall.UTF16ToString(buffer), nil
 }
