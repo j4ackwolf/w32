@@ -101,6 +101,7 @@ var (
 	procGetCursorPos                  = moduser32.NewProc("GetCursorPos")
 	procSetCursorPos                  = moduser32.NewProc("SetCursorPos")
 	procSetCursor                     = moduser32.NewProc("SetCursor")
+	procIconInfo                      = moduser32.NewProc("GetIconInfo")
 	procCreateIcon                    = moduser32.NewProc("CreateIcon")
 	procDestroyIcon                   = moduser32.NewProc("DestroyIcon")
 	procMonitorFromPoint              = moduser32.NewProc("MonitorFromPoint")
@@ -914,6 +915,14 @@ func SetCursor(cursor HCURSOR) HCURSOR {
 		uintptr(cursor),
 	)
 	return HCURSOR(ret)
+}
+
+func GetIconInfo(hIcon HICON, piconinfo *ICONINFO) bool {
+	ret, _, _ := procIconInfo.Call(
+		uintptr(hIcon),
+		uintptr(unsafe.Pointer(piconinfo)),
+	)
+	return ret != 0
 }
 
 func CreateIcon(instance HINSTANCE, nWidth, nHeight int, cPlanes, cBitsPerPixel byte, ANDbits, XORbits *byte) HICON {

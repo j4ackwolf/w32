@@ -777,6 +777,15 @@ type CREATESTRUCT struct {
 	dwExStyle    uint32
 }
 
+// http://msdn.microsoft.com/en-us/library/windows/desktop/ms644950.aspx
+type ICONINFO struct {
+	FIcon    BOOL
+	XHotspot uint32
+	YHotspot uint32
+	HbmMask  HBITMAP
+	HbmColor HBITMAP
+}
+
 // http://msdn.microsoft.com/en-us/library/windows/desktop/dd145065.aspx
 type MONITORINFO struct {
 	CbSize    uint32
