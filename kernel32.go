@@ -32,23 +32,24 @@ var (
 	procGetLastError       = modkernel32.NewProc("GetLastError")
 	// procOpenProcess                = modkernel32.NewProc("OpenProcess")
 	// procTerminateProcess           = modkernel32.NewProc("TerminateProcess")
-	procCloseHandle                = modkernel32.NewProc("CloseHandle")
-	procCreateToolhelp32Snapshot   = modkernel32.NewProc("CreateToolhelp32Snapshot")
-	procModule32First              = modkernel32.NewProc("Module32FirstW")
-	procModule32Next               = modkernel32.NewProc("Module32NextW")
-	procGetSystemTimes             = modkernel32.NewProc("GetSystemTimes")
-	procGetConsoleScreenBufferInfo = modkernel32.NewProc("GetConsoleScreenBufferInfo")
-	procSetConsoleTextAttribute    = modkernel32.NewProc("SetConsoleTextAttribute")
-	procGetDiskFreeSpaceEx         = modkernel32.NewProc("GetDiskFreeSpaceExW")
-	procGetProcessTimes            = modkernel32.NewProc("GetProcessTimes")
-	procSetSystemTime              = modkernel32.NewProc("SetSystemTime")
-	procGetSystemTime              = modkernel32.NewProc("GetSystemTime")
-	procVirtualAllocEx             = modkernel32.NewProc("VirtualAllocEx")
-	procVirtualFreeEx              = modkernel32.NewProc("VirtualFreeEx")
-	procWriteProcessMemory         = modkernel32.NewProc("WriteProcessMemory")
-	procReadProcessMemory          = modkernel32.NewProc("ReadProcessMemory")
-	procQueryPerformanceCounter    = modkernel32.NewProc("QueryPerformanceCounter")
-	procQueryPerformanceFrequency  = modkernel32.NewProc("QueryPerformanceFrequency")
+	procCloseHandle                  = modkernel32.NewProc("CloseHandle")
+	procCreateToolhelp32Snapshot     = modkernel32.NewProc("CreateToolhelp32Snapshot")
+	procModule32First                = modkernel32.NewProc("Module32FirstW")
+	procModule32Next                 = modkernel32.NewProc("Module32NextW")
+	procGetSystemTimes               = modkernel32.NewProc("GetSystemTimes")
+	procGetConsoleScreenBufferInfo   = modkernel32.NewProc("GetConsoleScreenBufferInfo")
+	procSetConsoleTextAttribute      = modkernel32.NewProc("SetConsoleTextAttribute")
+	procGetDiskFreeSpaceEx           = modkernel32.NewProc("GetDiskFreeSpaceExW")
+	procGetProcessTimes              = modkernel32.NewProc("GetProcessTimes")
+	procSetSystemTime                = modkernel32.NewProc("SetSystemTime")
+	procGetSystemTime                = modkernel32.NewProc("GetSystemTime")
+	procVirtualAllocEx               = modkernel32.NewProc("VirtualAllocEx")
+	procVirtualFreeEx                = modkernel32.NewProc("VirtualFreeEx")
+	procWriteProcessMemory           = modkernel32.NewProc("WriteProcessMemory")
+	procReadProcessMemory            = modkernel32.NewProc("ReadProcessMemory")
+	procQueryPerformanceCounter      = modkernel32.NewProc("QueryPerformanceCounter")
+	procQueryPerformanceFrequency    = modkernel32.NewProc("QueryPerformanceFrequency")
+	procWTSGetActiveConsoleSessionId = modkernel32.NewProc("WTSGetActiveConsoleSessionId")
 )
 
 func GetModuleHandle(modulename string) HINSTANCE {
@@ -385,4 +386,9 @@ func QueryPerformanceFrequency() uint64 {
 	)
 
 	return result
+}
+
+func WTSGetActiveConsoleSessionId() uint32 {
+	ret, _, _ := procWTSGetActiveConsoleSessionId.Call()
+	return uint32(ret)
 }
