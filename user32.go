@@ -1077,13 +1077,16 @@ func EnumDesktops(hWinStation HWINSTA, lpEnumFunc uintptr, lParam uintptr) bool 
 	return ret != 0
 }
 
-func OpenInputDesktop() HWND {
-	ret, _, _ := procOpenInputDesktop.Call(
-		uintptr(0),
-		uintptr(0),
-		uintptr(0),
+func OpenInputDesktop(dwFlags uint32, fInherit bool, dwDesiredAccess uint32) (HWND, error) {
+	ret, _, err := procOpenInputDesktop.Call(
+		uintptr(dwFlags),
+		uintptr(BoolToBOOL(fInherit)),
+		uintptr(dwDesiredAccess),
 	)
-	return HWND(ret)
+	if ret == 0 {
+		return 0, err
+	}
+	return HWND(ret), nil
 }
 
 func OpenDesktop(lpszDesktop *uint16, dwFlags uint32, fInherit bool, dwDesiredAccess uint32) HWND {
