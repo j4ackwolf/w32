@@ -1152,15 +1152,12 @@ func CloseWindowStation(hWinSta HWINSTA) bool {
 	return ret != 0
 }
 
-func SendInput(inputs []INPUT) (uint32, error) {
-	ret, _, _ := procSendInput.Call(
+func SendInput(inputs []INPUT) (uint32, uint32, error) {
+	ret, ret1, e := procSendInput.Call(
 		uintptr(len(inputs)),
 		uintptr(unsafe.Pointer(&inputs[0])),
 		uintptr(unsafe.Sizeof(INPUT{})),
 	)
-	if ret == 0 {
-		return 0, syscall.GetLastError()
-	}
 
-	return uint32(ret), nil
+	return uint32(ret), uint32(ret1), e
 }
