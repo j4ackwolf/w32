@@ -132,6 +132,7 @@ var (
 	procEnumWindowStations            = moduser32.NewProc("EnumWindowStationsW")
 	procOpenWindowStation             = moduser32.NewProc("OpenWindowStationW")
 	procCloseWindowStation            = moduser32.NewProc("CloseWindowStation")
+	procEnumDisplayDevicesW           = moduser32.NewProc("EnumDisplayDevicesW")
 )
 
 func RegisterClassEx(wndClassEx *WNDCLASSEX) ATOM {
@@ -1158,6 +1159,17 @@ func CloseWindowStation(hWinSta HWINSTA) bool {
 		uintptr(hWinSta),
 	)
 	return ret != 0
+}
+
+func EnumDisplayDevicesW(lpDevice *uint16, iDevNum uint32, lpDisplayDevice *DISPLAY_DEVICE, dwFlags uint32) bool {
+	ret, _, _ := procEnumDisplayDevicesW.Call(
+		uintptr(unsafe.Pointer(lpDevice)),
+		uintptr(iDevNum),
+		uintptr(unsafe.Pointer(lpDisplayDevice)),
+		uintptr(dwFlags),
+	)
+	return ret != 0
+
 }
 
 func SendInput(input INPUT) (uint32, uint32, error) {

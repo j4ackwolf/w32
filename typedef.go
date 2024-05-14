@@ -800,6 +800,15 @@ type MONITORINFOEX struct {
 	SzDevice [CCHDEVICENAME]uint16
 }
 
+type DISPLAY_DEVICE struct {
+	Cb           uint32
+	DeviceName   [32]uint16
+	DeviceString [128]uint16
+	StateFlags   uint32
+	DeviceID     [128]uint16
+	DeviceKey    [128]uint16
+}
+
 // http://msdn.microsoft.com/en-us/library/windows/desktop/dd368826.aspx
 type PIXELFORMATDESCRIPTOR struct {
 	Size                   uint16
